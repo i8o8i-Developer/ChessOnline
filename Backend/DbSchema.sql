@@ -96,15 +96,6 @@ CREATE TABLE IF NOT EXISTS GameAnalysis (
     FOREIGN KEY (GameId) REFERENCES Games(GameId)
 );
 
--- AddNewColumnsToExistingGamesTableIfTheyDontExist
-ALTER TABLE Games 
-ADD COLUMN IF NOT EXISTS GameType ENUM('classical', 'rapid', 'blitz') DEFAULT 'classical',
-ADD COLUMN IF NOT EXISTS TimeControl INT DEFAULT 600,
-ADD COLUMN IF NOT EXISTS Increment INT DEFAULT 0;
-
--- AddIndexForNewColumns
-ALTER TABLE Games ADD INDEX IF NOT EXISTS idx_game_type (GameType);
-
 -- UpdateExistingGamesToHaveProperGameTypeBasedOnDuration
 UPDATE Games 
 SET GameType = CASE 
