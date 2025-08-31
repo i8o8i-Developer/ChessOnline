@@ -50,6 +50,3 @@ logs/
 *.bak
 *.old
 *.orig
-
-# ChessOnline specific
-screenshots/
