@@ -1,0 +1,8 @@
+/* StyleCss ProvidesBasicLayout */
+body { font-family: Arial, Helvetica, sans-serif; background:#f5f7fa; }
+.Container { width:800px; margin:30px auto; padding:20px; background:#fff; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.06); }
+.Form input { display:block; margin:8px 0; padding:8px; width:100%; }
+#BoardArea { margin-top:12px; }
+#FenArea { width:100%; height:80px; }
+#ChatArea { margin-top:12px; border-top:1px solid #eee; padding-top:8px;}
+#ChatList { max-height:200px; overflow:auto; border:1px solid #ddd; padding:8px; background:#fafafa; }

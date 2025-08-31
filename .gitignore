@@ -1,0 +1,55 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+*.sqlite3
+
+# PHP
+/vendor/
+*.log
+*.cache
+*.tmp
+*.bak
+*.swp
+
+# Node/JS
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.db
+*.sql.bak
+*.DS_Store
+*.coverage
+*.egg-info/
+dist/
+build/
+*.tar.gz
+
+# Logs
+logs/
+*.log
+
+# Backup files
+*.bak
+*.old
+*.orig
+
+# ChessOnline specific
+screenshots/
