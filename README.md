@@ -1,4 +1,4 @@
-# ♟️ I8O8IChessOnline -v00v
+# ♟️ I8O8IChessOnline - v00v
 
 ## ProjectOverview 🚀
 
