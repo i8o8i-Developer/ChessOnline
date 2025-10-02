@@ -15,7 +15,13 @@ require_once 'Config.php';
 </head>
 <body class="retro">
     <div class="Container">
-        <h1>I8O8IChess Lobby</h1>
+        <header class="LobbyHeader">
+            <h1>I8O8IChess Lobby</h1>
+            <div class="HeaderActions">
+                <a class="btn btn-primary" href="release.php">Release Notes</a>
+                <a class="btn btn-secondary" href="contact.php">Contact Dev</a>
+            </div>
+        </header>
     
         <!-- UserInfo Is Shown Inside The left Panel (Compact) -->
     <div class="MainSection">
@@ -210,7 +216,6 @@ require_once 'Config.php';
             <div id="RatingHistoryList"></div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 

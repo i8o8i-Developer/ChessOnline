@@ -17,301 +17,109 @@ if (isset($_SESSION['user_id']) ||
   <title>I8O8IChess - Professional Chess Platform</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root{
+      --bg-0: #0f0f10;
+      --bg-1: #1c1c1c;
+      --panel: #222426;
+      --muted: #2f2f2f;
+      --accent: #4CAF50;
+      --text-on-dark: #dfeee0;
+      --glass: rgba(255,255,255,0.02);
+      --card-radius: 14px;
     }
-    
-    body { 
+
+    *{ box-sizing: border-box; margin:0; padding:0 }
+
+    html,body{ height:100%; }
+    body{
       font-family: 'Courier New', monospace;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      background: radial-gradient(1200px 400px at 10% 10%, rgba(76,175,80,0.03), transparent), linear-gradient(180deg,var(--bg-0),var(--bg-1));
+      color:var(--text-on-dark);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      -webkit-font-smoothing:antialiased;
     }
-    
-    .Container { 
-      width: 100%;
-      max-width: 450px;
-      background: rgba(42, 42, 42, 0.95);
-      padding: 40px;
-      border: 2px solid #444;
-      border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-      backdrop-filter: blur(10px);
+
+    .Container{
+      width:100%;
+      max-width:520px;
+      background: linear-gradient(180deg, rgba(28,28,28,0.96), rgba(20,20,20,0.96));
+      padding:32px 36px;
+      border-radius: var(--card-radius);
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02);
     }
-    
-    .Logo {
-      text-align: center;
-      margin-bottom: 40px;
+
+    .Logo{ text-align:center; margin-bottom:28px }
+    .Logo h1{
+      font-family: 'Press Start 2P', monospace;
+      color:var(--accent);
+      font-size:44px;
+      line-height:1;
+      letter-spacing:2px;
+      text-shadow: 0 6px 18px rgba(76,175,80,0.12), 0 1px 0 rgba(0,0,0,0.6);
+      margin-bottom:8px;
     }
-    
-    h1 {
-      color: #4CAF50;
-      text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
-      margin-bottom: 10px;
-      font-size: 2.5em;
-      font-weight: bold;
+    .Tagline{ color:#9aa79a; font-size:14px; letter-spacing:0.6px }
+
+    .Form{ display:flex; flex-direction:column; gap:16px }
+    .InputGroup label{ display:block; margin-bottom:8px; color:var(--accent); font-weight:700; font-size:13px }
+
+    input{
+      width:100%;
+      padding:14px 16px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(180deg,#eef7ff, #e2ecf7);
+      color:#052127;
+      font-size:15px;
+      box-shadow: inset 0 4px 10px rgba(12,20,30,0.06);
+      transition: box-shadow 150ms ease, transform 120ms ease;
     }
-    
-    .Tagline {
-      color: #aaa;
-      font-size: 1.1em;
-      margin-bottom: 20px;
-    }
-    
-    .Form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .InputGroup {
-      position: relative;
-    }
-    
-    .InputGroup label {
-      display: block;
-      margin-bottom: 5px;
-      color: #4CAF50;
-      font-weight: bold;
-      font-size: 0.9em;
-    }
-    
-    input {
-      width: 100%;
-      padding: 15px;
-      background: rgba(34, 34, 34, 0.8);
-      border: 2px solid #444;
-      border-radius: 8px;
-      color: #fff;
-      font-family: 'Courier New', monospace;
-      font-size: 16px;
-      transition: all 0.3s ease;
-    }
-    
-    input:focus {
-      border-color: #4CAF50;
-      outline: none;
-      box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
-      background: rgba(34, 34, 34, 0.95);
-    }
-    
-    input::placeholder {
-      color: #666;
-    }
-    
-    .BtnGroup {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 10px;
-    }
-    
-    button {
-      padding: 15px;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      font-size: 16px;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-    
-    button::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.5s;
-    }
-    
-    button:hover::before {
-      left: 100%;
-    }
-    
-    #BtnLogin {
-      background: linear-gradient(45deg, #4CAF50, #45a049);
-      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
-    
-    #BtnLogin:hover {
-      background: linear-gradient(45deg, #45a049, #4CAF50);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-    }
-    
-    #BtnRegister {
-      background: linear-gradient(45deg, #666, #555);
-      box-shadow: 0 4px 15px rgba(102, 102, 102, 0.3);
-    }
-    
-    #BtnRegister:hover {
-      background: linear-gradient(45deg, #555, #666);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 102, 102, 0.4);
-    }
-    
-    .Loading {
-      display: none;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s linear infinite;
-      margin: 0 auto;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .popup-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 1000;
-      backdrop-filter: blur(5px);
-    }
-    
-    .popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
-      padding: 30px;
-      border: 2px solid #444;
-      border-radius: 12px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-      z-index: 1001;
-      min-width: 350px;
-      max-width: 90vw;
-    }
-    
-    .popup-title {
-      font-size: 24px;
-      color: #4CAF50;
-      margin-bottom: 15px;
-      text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-      text-align: center;
-    }
-    
-    .popup-message {
-      font-size: 18px;
-      color: #fff;
-      margin-bottom: 25px;
-      line-height: 1.5;
-      text-align: center;
-    }
-    
-    .popup-button {
-      display: block;
-      width: 100%;
-      padding: 12px 20px;
-      background: linear-gradient(45deg, #4CAF50, #45a049);
-      border: none;
-      border-radius: 8px;
-      color: white;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 0 auto;
-      transition: all 0.3s ease;
-    }
-    
-    .popup-button:hover {
-      background: linear-gradient(45deg, #45a049, #4CAF50);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-    }
-    
-    .ErrorMessage {
-      color: #f44336;
-      background: rgba(244, 67, 54, 0.1);
-      border: 1px solid #f44336;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-      font-size: 14px;
-      display: none;
-    }
-    
-    .SuccessMessage {
-      color: #4CAF50;
-      background: rgba(76, 175, 80, 0.1);
-      border: 1px solid #4CAF50;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 10px;
-      font-size: 14px;
-      display: none;
-    }
-    
-    .Features {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #444;
-    }
-    
-    .Features h3 {
-      color: #4CAF50;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    
-    .FeatureList {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .FeatureList li {
-      padding: 5px 0;
-      color: #aaa;
-      font-size: 0.9em;
-    }
-    
-    .FeatureList li::before {
-      content: "✓ ";
-      color: #4CAF50;
-      font-weight: bold;
-    }
-    
-    @media (max-width: 480px) {
-      .Container {
-        padding: 30px 20px;
-      }
-      
-      h1 {
-        font-size: 2em;
-      }
-      
-      input, button {
-        font-size: 14px;
-        padding: 12px;
-      }
+    input:focus{ outline:none; box-shadow: 0 6px 30px rgba(76,175,80,0.14); transform: translateY(-1px) }
+    input::placeholder{ color:#668899 }
+
+    .BtnGroup{ display:flex; gap:12px; margin-top:6px }
+    .BtnGroup .btn{ flex:1 1 auto }
+
+    /* Button Utilities (Used By This Page) */
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:14px 18px; border-radius:10px; font-weight:800; font-size:15px; text-decoration:none; border:none; cursor:pointer; transition: transform 140ms ease, box-shadow 140ms ease }
+    .btn:focus{ outline:3px solid rgba(76,175,80,0.12); outline-offset:2px }
+    .btn[disabled], button[disabled]{ opacity:0.6; pointer-events:none }
+
+    .btn-primary{ background: linear-gradient(180deg,var(--accent), #3fa34a); color:#06210a; box-shadow: 0 8px 26px rgba(76,175,80,0.14) }
+    .btn-primary:hover{ transform: translateY(-3px); box-shadow: 0 18px 36px rgba(76,175,80,0.18) }
+
+    .btn-secondary{ background: linear-gradient(180deg,#666, #515151); color:#fff; box-shadow: 0 8px 18px rgba(0,0,0,0.35) }
+    .btn-secondary:hover{ transform: translateY(-3px); box-shadow: 0 16px 30px rgba(0,0,0,0.36) }
+
+    .Loading{ display:none; width:18px; height:18px; border:3px solid rgba(255,255,255,0.4); border-radius:50%; border-top-color:transparent; animation:spin 0.9s linear infinite }
+    @keyframes spin{ to{ transform:rotate(360deg) } }
+
+    .popup-overlay{ display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; }
+    .popup{ border-radius:12px; background: linear-gradient(180deg,#242424,#2e2e2e); padding:20px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 20px 50px rgba(0,0,0,0.7); max-width:420px }
+    .popup-title{ color:var(--accent); font-weight:800; margin-bottom:8px }
+
+    .ErrorMessage{ color:#f44336; background: rgba(244,67,54,0.06); border:1px solid rgba(244,67,54,0.12); padding:10px; border-radius:8px; display:none }
+    .SuccessMessage{ color:var(--accent); background: rgba(76,175,80,0.06); border:1px solid rgba(76,175,80,0.12); padding:10px; border-radius:8px; display:none }
+
+    .Features{ margin-top:22px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.03) }
+    .Features h3{ color:var(--accent); text-align:center; margin-bottom:12px }
+    .FeatureList{ list-style:none; padding:0; display:grid; gap:8px }
+    .FeatureList li{ color:#a9b9ac; font-size:14px }
+    .FeatureList li::before{ content:'✓ '; color:var(--accent); margin-right:6px }
+
+    .ExtraLinks{ display:flex; gap:12px; justify-content:center; margin-top:20px }
+    .ExtraLinks a{ text-decoration:none }
+
+    @media (max-width:520px){
+      .Container{ padding:22px; max-width:420px }
+      .Logo h1{ font-size:34px }
+      .BtnGroup{ flex-direction:column }
+      .ExtraLinks{ flex-direction:column }
     }
   </style>
   <!-- Retro Theme Font and Overrides (shared) -->
@@ -339,16 +147,16 @@ if (isset($_SESSION['user_id']) ||
       <div id="ErrorMessage" class="ErrorMessage"></div>
       <div id="SuccessMessage" class="SuccessMessage"></div>
       
-      <div class="BtnGroup">
-        <button type="submit" id="BtnLogin">
-          <span id="LoginText">Sign In</span>
-          <div id="LoginLoading" class="Loading"></div>
-        </button>
-        <button type="button" id="BtnRegister">
-          <span id="RegisterText">Create Account</span>
-          <div id="RegisterLoading" class="Loading"></div>
-        </button>
-      </div>
+            <div class="BtnGroup">
+                <button type="submit" id="BtnLogin" class="btn btn-primary">
+                    <span id="LoginText">Sign In</span>
+                    <div id="LoginLoading" class="Loading"></div>
+                </button>
+                <button type="button" id="BtnRegister" class="btn btn-secondary">
+                    <span id="RegisterText">Create Account</span>
+                    <div id="RegisterLoading" class="Loading"></div>
+                </button>
+            </div>
     </form>
     
     <div class="Features">
@@ -362,13 +170,19 @@ if (isset($_SESSION['user_id']) ||
         <li>Rating History Tracking</li>
       </ul>
     </div>
+    
+        <!-- Extra Links: Contact & Release -->
+        <div class="ExtraLinks">
+            <a class="btn btn-primary" href="release.php">What's New / Release</a>
+            <a class="btn btn-secondary" href="contact.php">Contact Developer</a>
+        </div>
   </div>
 
   <div class="popup-overlay" id="popupOverlay">
     <div class="popup">
       <div class="popup-title" id="popupTitle"></div>
       <div class="popup-message" id="popupMessage"></div>
-      <button class="popup-button" id="popupButton" onclick="hidePopup()">OK</button>
+    <button class="popup-button btn btn-primary" id="popupButton" onclick="hidePopup()">OK</button>
     </div>
   </div>
 
@@ -449,11 +263,17 @@ function hideMessages() {
 function showPopup(title, message) {
     document.getElementById('popupTitle').textContent = title;
     document.getElementById('popupMessage').textContent = message;
-    document.getElementById('popupOverlay').style.display = 'block';
+    const overlay = document.getElementById('popupOverlay');
+    overlay.style.display = 'flex';
+    overlay.setAttribute('aria-hidden', 'false');
+    // move focus to popup button for keyboard users
+    setTimeout(() => { const btn = document.getElementById('popupButton'); if (btn) btn.focus(); }, 60);
 }
 
 function hidePopup() {
-    document.getElementById('popupOverlay').style.display = 'none';
+    const overlay = document.getElementById('popupOverlay');
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
 }
 
 function setLoadingState(button, loading) {
