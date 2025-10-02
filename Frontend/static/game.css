@@ -1,0 +1,229 @@
+/* Retro / CRT Inspired Overrides For game.php
+   Keeps Original Color Palette (greens, dark grays) But Applies
+   Retro Pixel Font, Scanline Effects, And Heavier Borders.
+*/
+
+:root{
+  --accent: #4CAF50;
+  --accent-dark: #45a049;
+  --bg-dark: #161616;
+  --panel-bg: rgba(20,20,20,0.85);
+  --panel-border: #2e2e2e;
+}
+
+/* Ensure The Page Is Full-Height So Centering Works Reliably */
+html, body { height: 100%; }
+
+/* All Retro Rules are Scoped Under Body.Retro So The Theme Can Be Toggled */
+body.retro h1,
+body.retro .popup-title {
+  font-family: 'Press Start 2P', 'Courier New', monospace !important;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+body.retro .Container,
+body.retro .PlayerBox,
+body.retro .MoveHistory,
+body.retro .WinProbability,
+body.retro #ChatArea,
+body.retro .popup {
+  border-radius: 6px !important;
+  border: 2px solid var(--panel-border) !important;
+}
+
+body.retro .Container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.03) 51%);
+  background-size: 100% 4px;
+  mix-blend-mode: overlay;
+}
+
+body.retro #Board {
+  background: linear-gradient(180deg, rgba(7,7,7,0.9), rgba(12,12,12,0.95)) !important;
+  border-radius: 4px !important;
+  border: 3px solid rgba(76,175,80,0.06) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.02) !important;
+}
+
+body.retro .white-1e1d7 { background-color: #f2f6d9 !important; }
+body.retro .black-3c85d { background-color: #6b8b3f !important; }
+
+body.retro .GameControls button,
+body.retro .popup-button,
+body.retro #BtnSendChat {
+  border-radius: 3px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6) !important;
+  border: 2px solid rgba(0,0,0,0.5) !important;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.6) !important;
+  font-family: 'Press Start 2P', 'Courier New', monospace !important;
+  font-size: 11px !important;
+}
+
+body.retro .GameControls button:hover,
+body.retro .popup-button:hover,
+body.retro #BtnSendChat:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.7) !important;
+  transform: translateY(-1px) !important;
+}
+
+body.retro .Timer {
+  background: linear-gradient(90deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15)) !important;
+  padding: 6px 10px;
+  border-radius: 3px !important;
+  border: 2px solid rgba(0,0,0,0.5) !important;
+  display: inline-block;
+}
+
+body.retro .MoveList .MoveRow {
+  background: rgba(0,0,0,0.35) !important;
+  border: 1px solid rgba(0,0,0,0.6) !important;
+  padding: 8px !important;
+  margin-bottom: 6px !important;
+}
+
+body.retro #ChatList {
+  background: linear-gradient(180deg, rgba(0,0,0,0.65), rgba(8,8,8,0.7)) !important;
+  color: #cfe8c8 !important;
+  font-family: 'Courier New', monospace !important;
+  border: 2px solid rgba(0,0,0,0.6) !important;
+}
+
+body.retro .popup {
+  border: 3px solid rgba(36,36,36,0.9) !important;
+  background: linear-gradient(180deg, rgba(18,18,18,0.98), rgba(24,24,24,0.98)) !important;
+}
+
+body.retro .ProbBar { background: rgba(0,0,0,0.6) !important; border: 2px solid rgba(0,0,0,0.8) !important; }
+body.retro .ProbFill { background: repeating-linear-gradient(90deg, var(--accent), var(--accent) 6px, var(--accent-dark) 6px, var(--accent-dark) 12px) !important; border-radius: 0 !important; }
+
+body.retro .PlayerBox.Active { box-shadow: 0 10px 28px rgba(76,175,80,0.06), 0 0 12px rgba(76,175,80,0.03) !important; border-color: rgba(76,175,80,0.14) !important; }
+
+body.retro .PlayerBox, body.retro .MoveHistory, body.retro .WinProbability, body.retro #ChatArea { background: rgba(18,18,18,0.95) !important; }
+
+body.retro .MoveHistory h3, body.retro .WinProbability h3, body.retro #ChatArea h3 { font-family: 'Press Start 2P', 'Courier New', monospace !important; font-size: 12px !important; color: var(--accent) !important; }
+
+body.retro .piece-417db { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) !important; }
+
+body.retro { color: #d9f1d9 !important; }
+
+body.retro .connection-status { font-family: 'Press Start 2P', monospace !important; font-size: 11px !important; }
+
+/* Center The Main Container On-Screen (Horizontal + Vertical) */
+/* Strong Centering Rules: Keep Container Centered Horizontally and Vertically */
+body.retro {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
+}
+
+/* Keep The Container Constrained So It Can Be Vertically Centered Even On Small Screens */
+body.retro > .Container {
+  margin: 0 auto !important;
+  max-height: calc(100vh - 32px) !important;
+  overflow: auto !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6) !important;
+}
+
+@media (max-width: 480px) {
+  body.retro h1 { font-size: 14px !important; }
+  body.retro .popup-title { font-size: 14px !important; }
+}
+
+/* Responsive Improvements for Small and Medium Screens */
+@media (max-width: 900px) {
+  body.retro .Container {
+    padding: 14px !important;
+    box-shadow: none !important;
+    border-radius: 6px !important;
+  }
+
+  body.retro h1 {
+    font-size: 30px !important;
+    margin-bottom: 8px !important;
+    text-align: center;
+  }
+
+  /* Stack Player Boxes Vertically and Center Their Content */
+  body.retro .MainGrid, body.retro .PlayersRow { display: flex !important; flex-direction: column !important; gap: 16px !important; }
+  body.retro .PlayerBox { width: 100% !important; padding: 14px !important; border-radius: 6px !important; }
+  body.retro .PlayerBox .PlayerName { text-align: center !important; font-size: 14px !important; }
+
+  /* Make The Large Timer Prominent and Centered */
+  body.retro .Timer { display: block !important; margin: 10px auto !important; padding: 12px 18px !important; font-size: 34px !important; border-radius: 6px !important; }
+
+  /* Status/Notice Bar Styling (Centered, Readable) */
+  body.retro #Status, body.retro .StatusBar {
+    display: block !important;
+    width: 100% !important;
+    padding: 12px 14px !important;
+    margin-top: 6px !important;
+    background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.18)) !important;
+    border: 2px solid rgba(76,175,80,0.06) !important;
+    color: var(--accent) !important;
+    text-align: center !important;
+    font-family: 'Press Start 2P', monospace !important;
+    font-size: 14px !important;
+    border-radius: 6px !important;
+  }
+
+  /* Compact Move History and Chat Panels */
+  body.retro .MoveHistory, body.retro #ChatArea { padding: 8px !important; border-radius: 6px !important; }
+}
+
+@media (max-width: 480px) {
+  body.retro .Container { padding: 10px !important; }
+  body.retro h1 { font-size: 22px !important; }
+  body.retro .PlayerBox { padding: 12px !important; }
+  body.retro .Timer { font-size: 30px !important; padding: 8px 12px !important; }
+  body.retro #Status, body.retro .StatusBar { font-size: 13px !important; padding: 10px !important; }
+}
+
+/* Tablet / Narrow Screens: Show Opponent and Player Boxes Side-by-Side But Keep Status Full Width Beneath */
+@media (max-width: 770px) {
+  body.retro .PlayersInfo {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 12px !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+    /* Allow Wrapping So The Status Bar Can Drop Beneath The Two Boxes */
+    flex-wrap: wrap !important;
+  }
+
+  /* Make Status Span Full Width Under The Two Boxes */
+  body.retro .PlayersInfo > #Status {
+    order: 2 !important;
+    /* Occupy Full Width Beneath The Player Boxes */
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    margin-top: 8px !important;
+    text-align: center !important;
+    display: block !important;
+  }
+
+  /* Player Boxes Sit Side by Side and Take Roughly Half Each */
+  body.retro .PlayersInfo > .PlayerBox {
+    order: 1 !important;
+    flex: 0 0 48% !important;
+    width: 48% !important;
+    min-width: 140px !important;
+    box-sizing: border-box !important;
+    align-self: stretch !important;
+  }
+
+  /* Slightly Reduce Padding and Emphasize Timer SizeQ */
+  body.retro .PlayersInfo .PlayerBox { padding: 12px !important; }
+  body.retro .PlayersInfo .Timer { font-size: 28px !important; padding: 8px 12px !important; display:block; margin: 6px auto; }
+
+  /* On Very Small Phones Fallback to Stacked Layout Using Existing Rules */
+  @media (max-width: 420px) {
+    body.retro .PlayersInfo { flex-direction: column !important; }
+    body.retro .PlayersInfo > .PlayerBox { width: 100% !important; }
+    body.retro .PlayersInfo > #Status { order: 2 !important; }
+  }
+}

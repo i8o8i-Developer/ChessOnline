@@ -10,7 +10,6 @@ __pycache__/
 
 # PHP
 /vendor/
-*.log
 *.cache
 *.tmp
 *.bak
@@ -41,10 +40,6 @@ Thumbs.db
 dist/
 build/
 *.tar.gz
-
-# Logs
-logs/
-*.log
 
 # Backup files
 *.bak

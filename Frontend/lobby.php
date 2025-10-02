@@ -7,459 +7,39 @@ require_once 'Config.php';
 <head>
   <meta charset="utf-8">
   <title>I8O8IChess Lobby</title>
-  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-  <style>
-    body { 
-      font-family: 'Courier New', monospace;
-      text-align: center; 
-      background: #1a1a1a; 
-      color: #fff;
-      margin: 0;
-      padding: 20px;
-    }
-    .Container { 
-      width: 100%;
-      max-width: 1000px;
-      margin: 20px auto; 
-      background: #2a2a2a; 
-      padding: 20px;
-      border-radius: 12px;
-      box-sizing: border-box;
-    }
-
-    h1 {
-      color: #4CAF50;
-      text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
-      margin-bottom: 30px;
-    }
-    .UserInfo {
-      background: #333;
-      padding: 18px 10px;
-      border-radius: 8px;
-      margin-bottom: 30px;
-      font-size: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 8px rgba(76,175,80,0.08);
-      border: 1px solid #222;
-    }
-    .UserInfo .WelcomeRow {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #4CAF50;
-      margin-bottom: 10px;
-      letter-spacing: 1px;
-      text-shadow: 0 0 8px rgba(76,175,80,0.15);
-    }
-    .Ratings {
-      display: flex;
-      gap: 30px;
-      margin-top: 8px;
-      justify-content: center;
-      align-items: stretch;
-      flex-wrap: wrap;
-    }
-    .RatingBox {
-      background: #222;
-      padding: 14px 18px;
-      border-radius: 8px;
-      text-align: center;
-      min-width: 120px;
-      box-shadow: 0 2px 8px rgba(76,175,80,0.08);
-      border: 1px solid #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .RatingLabel {
-      font-size: 15px;
-      color: #4CAF50;
-      margin-bottom: 6px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-    .RatingValue {
-      font-size: 26px;
-      color: #fff;
-      font-weight: bold;
-      margin-bottom: 2px;
-      letter-spacing: 1px;
-      word-break: break-word;
-    }
-    .PeakRating {
-      font-size: 13px;
-      color: #aaa;
-      margin-left: 0;
-      font-weight: 400;
-      word-break: break-word;
-    }
-    button {
-      padding: 15px 30px;
-      font-size: 18px;
-      background: #4CAF50;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      cursor: pointer;
-      font-family: 'Courier New', monospace;
-      transition: all 0.3s;
-      margin: 10px;
-    }
-    button:hover {
-      background: #45a049;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-    }
-    #MatchStatus {
-      margin-top: 20px;
-      padding: 15px;
-      background: #333;
-      border-radius: 4px;
-      font-size: 18px;
-      color: #4CAF50;
-    }
-    .Controls {
-      margin-top: 30px;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-    #BtnLogout {
-      background: #f44336;
-    }
-    #BtnLogout:hover {
-      background: #d32f2f;
-      box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
-    }
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid #4CAF50;
-      border-radius: 50%;
-      border-top-color: transparent;
-      animation: spin 1s linear infinite;
-      margin-left: 10px;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* NEW: Game Type Selector Styles */
-    .GameTypeSelector {
-      margin: 15px 0;
-      text-align: left;
-    }
-
-    .GameTypeLabel {
-      display: block;
-      padding: 8px 12px;
-      margin: 5px 0;
-      background: #444;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-      font-size: 16px;
-    }
-
-    .GameTypeLabel:hover {
-      background: #555;
-    }
-
-    .GameTypeLabel input {
-      margin-right: 8px;
-    }
-
-    .GameTypeLabel input:checked + span {
-      color: #4CAF50;
-      font-weight: bold;
-    }
-
-    /* Leaderboard Styles */
-    .Leaderboard {
-        background: #333;
-        padding: 15px;
-        border-radius: 4px;
-        margin: 20px 0;
-    }
-    .LeaderboardTable {
-        width: 100%;
-        border-collapse: collapse;
-        color: #fff;
-    }
-    .LeaderboardTable th, .LeaderboardTable td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #444;
-    }
-    .LeaderboardTable th {
-        color: #4CAF50;
-    }
-    /* Rating History Styles */
-    .RatingHistory {
-        background: #333;
-        padding: 15px;
-        border-radius: 4px;
-        margin: 20px 0;
-    }
-    .RatingType {
-        display: inline-block;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-size: 0.8em;
-        margin-right: 5px;
-    }
-
-    .RatingType.classical {
-        background: #2d3b2d;
-        color: #4CAF50;
-    }
-
-    .RatingType.rapid {
-        background: #3b2d2d;
-        color: #f44336;
-    }
-    /* Achievements Styles */
-    .Achievements {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 10px;
-        margin: 20px 0;
-    }
-    
-    .Achievement {
-        background: #333;
-        padding: 15px 10px;
-        border-radius: 4px;
-        text-align: center;
-        opacity: 0.4;
-        transition: all 0.3s;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-width: 0;
-    }
-    
-    .Achievement.Unlocked {
-        opacity: 1;
-        background: #2d3b2d;
-    }
-    
-    .Achievement .Icon {
-        font-size: 32px;
-        margin-bottom: 6px;
-    }
-    .Achievement .Title {
-      font-size: 1em;
-      font-weight: bold;
-      color: #4CAF50;
-      margin-bottom: 4px;
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 6px rgba(76,175,80,0.12);
-    }
-    .Achievement .Description {
-      font-size: 0.95em;
-      color: #ccc;
-      margin-bottom: 0;
-      line-height: 1.2;
-      word-break: break-word;
-    }
-    @media (max-width: 1200px) {
-      .Achievements {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-      }
-    }
-    @media (max-width: 900px) {
-      .Achievements {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-      }
-      .Achievement .Icon {
-        font-size: 24px;
-      }
-      .Achievement .Title {
-        font-size: 0.95em;
-      }
-      .Achievement .Description {
-        font-size: 0.9em;
-      }
-    }
-    @media (max-width: 600px) {
-      .Achievements {
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-      .Achievement {
-        padding: 8px 4px;
-        font-size: 13px;
-      }
-      .Achievement .Icon {
-        font-size: 18px;
-        margin-bottom: 2px;
-      }
-      .Achievement .Title {
-        font-size: 0.9em;
-        margin-bottom: 2px;
-      }
-      .Achievement .Description {
-        font-size: 0.85em;
-      }
-    }
-    @media (max-width: 400px) {
-      .Achievement {
-        padding: 3px;
-        font-size: 11px;
-      }
-      .Achievement .Icon {
-        font-size: 14px;
-      }
-      .Achievement .Title {
-        font-size: 0.8em;
-      }
-      .Achievement .Description {
-        font-size: 0.75em;
-      }
-    }
-    @media (max-width: 900px) {
-      .RatingBox {
-        padding: 10px 8px;
-        min-width: 90px;
-      }
-      .RatingLabel {
-        font-size: 13px;
-      }
-      .RatingValue {
-        font-size: 18px;
-      }
-      .PeakRating {
-        font-size: 11px;
-      }
-    }
-    @media (max-width: 600px) {
-      .Ratings {
-        flex-direction: row;
-        gap: 8px;
-        align-items: center;
-      }
-      .RatingBox {
-        padding: 8px 4px;
-        min-width: 70px;
-      }
-      .RatingLabel {
-        font-size: 12px;
-      }
-      .RatingValue {
-        font-size: 15px;
-      }
-      .PeakRating {
-        font-size: 10px;
-      }
-    }
-    /* Stats Grid Fix */
-    .Stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      margin: 20px 0;
-      padding: 0;
-      background: transparent;
-    }
-    .StatBox {
-      background: #222;
-      padding: 18px 10px;
-      border-radius: 8px;
-      text-align: center;
-      transition: box-shadow 0.3s;
-      box-shadow: 0 2px 8px rgba(76,175,80,0.08);
-      border: 1px solid #333;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .StatBox .Label {
-      font-size: 15px;
-      color: #e5cc88ff;
-      margin-bottom: 8px;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-    }
-    .StatBox .Value {
-      font-size: 28px;
-      font-weight: bold;
-      color: #4CAF50;
-      margin: 0;
-      letter-spacing: 1px;
-    }
-    .StatBox:hover {
-      box-shadow: 0 4px 16px rgba(76,175,80,0.15);
-      background: #263826;
-      border-color: #4CAF50;
-    }
-    @media (max-width: 1200px) {
-      .Stats {
-        gap: 14px;
-      }
-    }
-    @media (max-width: 900px) {
-      .Stats {
-        gap: 10px;
-      }
-    }
-    @media (max-width: 600px) {
-      .Stats {
-        grid-template-columns: 1fr;
-        gap: 6px;
-      }
-      .StatBox {
-        padding: 10px 4px;
-        font-size: 13px;
-      }
-      .StatBox .Label {
-        font-size: 13px;
-        margin-bottom: 4px;
-      }
-      .StatBox .Value {
-        font-size: 18px;
-      }
-    }
-  </style>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <!-- External Styles (use static/lobby.css as the single source for lobby styles) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/game.css">
+    <link rel="stylesheet" href="static/lobby.css">
 </head>
-<body>
-  <div class="Container">
-    <h1>I8O8IChess Lobby</h1>
+<body class="retro">
+    <div class="Container">
+        <h1>I8O8IChess Lobby</h1>
     
-    <div class="UserInfo">
-      <div class="WelcomeRow">
-        Welcome, <span id="LblUserName" class="UserName"></span>!
-      </div>
-      <div class="Ratings">
-        <div class="RatingBox">
-            <div class="RatingLabel">Classical</div>
-            <div class="RatingValue">
-                <span id="LblClassicalRating">1000</span>
-            </div>
-            <span class="PeakRating" id="LblClassicalPeak"></span>
-        </div>
-        <div class="RatingBox">
-            <div class="RatingLabel">Rapid</div>
-            <div class="RatingValue">
-                <span id="LblRapidRating">1000</span>
-            </div>
-            <span class="PeakRating" id="LblRapidPeak"></span>
-        </div>
-      </div>
-    </div>
-
+        <!-- UserInfo Is Shown Inside The left Panel (Compact) -->
     <div class="MainSection">
-      <div class="LeftPanel">
+            <div class="LeftPanel">
+                <div class="UserInfo compact">
+                    <div class="WelcomeRow">Welcome, <span id="LblUserName" class="UserName"></span>!</div>
+                    <div class="Ratings">
+                        <div class="RatingBox">
+                            <div class="RatingLabel">Classical</div>
+                            <div class="RatingValue"><span id="LblClassicalRating">1000</span></div>
+                            <span class="PeakRating" id="LblClassicalPeak"></span>
+                        </div>
+                        <div class="RatingBox">
+                            <div class="RatingLabel">Rapid</div>
+                            <div class="RatingValue"><span id="LblRapidRating">1000</span></div>
+                            <span class="PeakRating" id="LblRapidPeak"></span>
+                        </div>
+                        <div class="RatingBox">
+                            <div class="RatingLabel">Blitz</div>
+                            <div class="RatingValue"><span id="LblBlitzRating">100</span></div>
+                            <span class="PeakRating" id="LblBlitzPeak"></span>
+                        </div>
+                    </div>
+                </div>
         <div class="SectionHeader">Your Statistics</div>
         <div class="Stats" id="PlayerStats">
           <div class="StatBox">
@@ -487,12 +67,40 @@ require_once 'Config.php';
               <div class="Value" id="FastWins">-</div>
           </div>
           <div class="StatBox">
+              <div class="Label">Quick Wins (&lt;3min)</div>
+              <div class="Value" id="QuickWins">-</div>
+          </div>
+          <div class="StatBox">
+              <div class="Label">Total Moves</div>
+              <div class="Value" id="TotalMoves">-</div>
+          </div>
+          <div class="StatBox">
               <div class="Label">Avg Game Length</div>
               <div class="Value" id="AvgGameLength">-</div>
           </div>
           <div class="StatBox">
               <div class="Label">Longest Game</div>
               <div class="Value" id="LongestGame">-</div>
+          </div>
+          <div class="StatBox">
+              <div class="Label">Best Win Streak</div>
+              <div class="Value" id="BestWinStreak">-</div>
+          </div>
+          <div class="StatBox">
+              <div class="Label">Draws</div>
+              <div class="Value" id="Draws">-</div>
+          </div>
+          <div class="StatBox">
+              <div class="Label">Losses</div>
+              <div class="Value" id="Losses">-</div>
+          </div>
+          <div class="StatBox">
+              <div class="Label">Avg Time/Move</div>
+              <div class="Value" id="AvgTimePerMove">-</div>
+          </div>
+          <div class="StatBox">
+              <div class="Label">Games Abandoned</div>
+              <div class="Value" id="GamesAbandoned">-</div>
           </div>
         </div>
 
@@ -522,6 +130,31 @@ require_once 'Config.php';
                 <div class="Icon">🎮</div>
                 <div class="Title">Veteran</div>
                 <div class="Description">Play 100 Games</div>
+            </div>
+            <div class="Achievement" id="QuickMaster">
+                <div class="Icon">⚡️</div>
+                <div class="Title">Quick Master</div>
+                <div class="Description">Win 5 Games Under 3 Minutes</div>
+            </div>
+            <div class="Achievement" id="Marathonist">
+                <div class="Icon">🏁</div>
+                <div class="Title">Marathonist</div>
+                <div class="Description">Play 50 Games</div>
+            </div>
+            <div class="Achievement" id="Mover">
+                <div class="Icon">♞</div>
+                <div class="Title">Mover</div>
+                <div class="Description">Make 1000 Moves</div>
+            </div>
+            <div class="Achievement" id="Streak5">
+                <div class="Icon">🔥</div>
+                <div class="Title">Hot Streak</div>
+                <div class="Description">Win 5 Games In A Row</div>
+            </div>
+            <div class="Achievement" id="ConsistentPlayer">
+                <div class="Icon">📅</div>
+                <div class="Title">Consistent Player</div>
+                <div class="Description">Play 10 Games In One Week</div>
             </div>
         </div>
       </div>
@@ -561,6 +194,7 @@ require_once 'Config.php';
                         <th>Player</th>
                         <th>Classical</th>
                         <th>Rapid</th>
+                        <th>Blitz</th>
                     </tr>
                 </thead>
                 <tbody id="LeaderboardBody">
@@ -583,6 +217,16 @@ require_once 'Config.php';
 <script>
 let ApiBaseUrl = "<?php echo $AppConfig['ApiBaseUrl']; ?>";
 const ApiBase = ApiBaseUrl + "/api";
+
+function escapeHtml(text) {
+    if (!text && text !== 0) return '';
+    return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
 
 // StateManagement
 const gameState = {
@@ -610,7 +254,7 @@ async function cleanupSearch() {
                 keepalive: true
             });
         } catch (error) {
-            console.log('Cleanup error:', error);
+            console.log('Cleanup Error :', error);
         }
         gameState.isSearching = false;
     }
@@ -627,7 +271,9 @@ socket.on("connect", ()=> {
 });
 
 socket.on("match_found", (data)=> {
-  window.location = 'game.php?gameId=' + data.GameId;
+  // If Server Provided A JoinToken Include It In The URL To Allow Immediate Validation/Join
+  const tokenPart = data.JoinToken ? ('&token=' + encodeURIComponent(data.JoinToken)) : '';
+  window.location = 'game.php?gameId=' + data.GameId + tokenPart;
 });
 
 function logout() {
@@ -652,7 +298,7 @@ document.getElementById('BtnQuickMatch').onclick = async function() {
     gameState.isSearching = true;
     
     try {
-        status.innerHTML = `Searching For ${selectedType} Type Game Opponent... <div class="loading"></div>`;
+        status.innerHTML = `Searching For ${selectedType} Type Game Opponent ... <div class="loading"></div>`;
 
         // Function To Check For Match
         const checkMatch = async () => {
@@ -700,7 +346,7 @@ document.getElementById('BtnQuickMatch').onclick = async function() {
             }, 2000);
         }
     } catch (error) {
-        console.error('QuickMatch Error:', error);
+        console.error('QuickMatch Error :', error);
         cleanupSearch();
         status.innerHTML = 'Error Finding Match. Please Try Again.';
         this.disabled = false;
@@ -720,62 +366,94 @@ socket.on('disconnect', handlePageCleanup);
 const userName = localStorage.getItem('I8O8IChessUserName');
 document.getElementById('LblUserName').innerText = userName || 'Guest';
 
-// Add This Function To Update Leaderboard
+// Add This Function To Update Leaderboard 
 async function updateLeaderboard() {
-    // Request Only Top 5 Players From Backend
-    const resp = await fetch(ApiBase + '/top-players?limit=5');
-    const json = await resp.json();
-    if (json?.Success) {
-        const tbody = document.getElementById('LeaderboardBody');
-        tbody.innerHTML = json.Players.map((p, i) => `
-            <tr>
-                <td>${i + 1}</td>
-                <td>${p.UserName}</td>
-                <td>${p.ClassicalRating}</td>
-                <td>${p.RapidRating}</td>
-            </tr>
-        `).join('');
+    try {
+        const resp = await fetch(ApiBase + '/top-players?limit=5');
+        const text = await resp.text();
+        let json;
+        try {
+            json = JSON.parse(text);
+        } catch (e) {
+            console.error('Failed Parsing Leaderboard JSON', text);
+            return;
+        }
+        if (json?.Success) {
+            const tbody = document.getElementById('LeaderboardBody');
+            tbody.innerHTML = json.Players.map((p, i) => {
+                const classical = p.ClassicalRating || p.Rating || '-';
+                const rapid = p.RapidRating || '-';
+                const blitz = p.BlitzRating || p.Blitz || '-';
+                return `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHtml(p.UserName)}</td>
+                    <td>${classical}</td>
+                    <td>${rapid}</td>
+                    <td>${blitz}</td>
+                </tr>
+            `}).join('');
+        }
+    } catch (err) {
+        console.error('Error Fetching Leaderboard', err);
     }
 }
 
-// FIXED UpdatePlayerStats Function For lobby.php
+// FIXED UpdatePlayerStats Function For lobby.php (Extended With Blitz And Extra Stats)
 async function updatePlayerStats() {
     try {
         const resp = await fetch(`${ApiBase}/user/${UserId}`);
         const json = await resp.json();
         if (json?.Success) {
-            // Update Player Stats With Null Checks And Proper Peak Rating Handling
             const updateElement = (id, value, suffix = '') => {
                 const element = document.getElementById(id);
-                if (element) element.innerText = value + suffix;
+                if (element) element.innerText = (value === null || value === undefined) ? '-' : (value + suffix);
             };
-            
+
+            // Ratings
+            updateElement('LblClassicalRating', json.ClassicalRating || json.Classical || 100);
+            updateElement('LblRapidRating', json.RapidRating || json.Rapid || 100);
+            updateElement('LblBlitzRating', json.BlitzRating || json.Blitz || 100);
+
+            updateElement('LblClassicalPeak', (json.ClassicalPeak || json.ClassicalRating || json.Classical) ? `(Peak: ${json.ClassicalPeak || json.ClassicalRating || json.Classical})` : '');
+            updateElement('LblRapidPeak', (json.RapidPeak || json.RapidRating || json.Rapid) ? `(Peak: ${json.RapidPeak || json.RapidRating || json.Rapid})` : '');
+            const blitzPeakValue = json.BlitzPeak || json.BlitzRating || json.Blitz || 100;
+            updateElement('LblBlitzPeak', `(Peak: ${blitzPeakValue})`);
+
+            // General stats
             updateElement('GamesPlayed', json.GamesPlayed || 0);
             updateElement('WinRate', json.WinRate || 0, '%');
             updateElement('CheckmateWins', json.CheckmateWins || 0);
             updateElement('FastWins', json.FastWins || 0);
+            updateElement('QuickWins', json.QuickWins || json.FastWinsUnder3 || 0);
+            updateElement('TotalMoves', json.TotalMoves || 0);
             updateElement('AvgGameLength', Math.round(json.AvgGameLength || 0), 'm');
             updateElement('LongestGame', json.LongestGame || 0, 'm');
-            updateElement('LblClassicalRating', json.ClassicalRating || 100);
-            updateElement('LblRapidRating', json.RapidRating || 100);
+            updateElement('BestWinStreak', json.BestWinStreak || json.BestStreak || 0);
 
-            // FIXED: Properly Display Peak Ratings
-            const classicalPeak = json.ClassicalPeak || json.ClassicalRating || 100;
-            const rapidPeak = json.RapidPeak || json.RapidRating || 100;
-            updateElement('LblClassicalPeak', `(Peak: ${classicalPeak})`);
-            updateElement('LblRapidPeak', `(Peak: ${rapidPeak})`);
+            // New Stats Added : Draws, Losses, AvgTimePerMove (seconds), GamesAbandoned
+            updateElement('Draws', json.Draws || json.TotalDraws || 0);
+            updateElement('Losses', json.Losses || json.TotalLosses || 0);
+            // Avg Time Per Move May Be Provided In Seconds; Display In Seconds With One Decimal
+            const avgMove = (json.AvgTimePerMove !== undefined && json.AvgTimePerMove !== null) ? json.AvgTimePerMove : (json.AvgMoveTime || 0);
+            updateElement('AvgTimePerMove', (Math.round((avgMove || 0) * 10) / 10));
+            updateElement('GamesAbandoned', json.GamesAbandoned || json.AbandonedGames || 0);
 
-            // Update Peak Rating In Stats Section
-            const currentPeak = Math.max(classicalPeak, rapidPeak);
+            // Peak Rating In Stats Section (Choose The Max Across Types)
+            const classicalPeak = json.ClassicalPeak || json.ClassicalRating || json.Classical || 0;
+            const rapidPeak = json.RapidPeak || json.RapidRating || json.Rapid || 0;
+            const blitzPeak = json.BlitzPeak || json.BlitzRating || json.Blitz || 0;
+            const currentPeak = Math.max(classicalPeak, rapidPeak, blitzPeak);
             updateElement('PeakRating', currentPeak);
 
             // Update Streak Separately Since It Needs Await
             const streak = await calculateStreak();
             updateElement('CurrentStreak', streak);
 
-            // Store Updated Ratings In localStorage
-            localStorage.setItem('I8O8IChessClassicalRating', json.ClassicalRating || 100);
-            localStorage.setItem('I8O8IChessRapidRating', json.RapidRating || 100);
+            // Store Updated Ratings In localStorage safely
+            try { localStorage.setItem('I8O8IChessClassicalRating', (json.ClassicalRating || json.Classical || 100).toString()); } catch(e){}
+            try { localStorage.setItem('I8O8IChessRapidRating', (json.RapidRating || json.Rapid || 100).toString()); } catch(e){}
+            try { localStorage.setItem('I8O8IChessBlitzRating', (json.BlitzRating || json.Blitz || 100).toString()); } catch(e){}
         }
     } catch (error) {
         console.error('Error Updating Stats :', error);

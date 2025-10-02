@@ -56,4 +56,4 @@ class ChessEngine:
         if Board.is_stalemate() or Board.is_insufficient_material():
             return "Draw"
         return "Ongoing"
-        return "Ongoing"
+    

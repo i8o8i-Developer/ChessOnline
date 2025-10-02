@@ -1,6 +1,6 @@
 # ConfigPyContainsAppConfiguration
 DatabaseHost = "127.0.0.1"
-DatabasePort = 1677  
+DatabasePort = 3306  
 DatabaseUser = "root"
 DatabasePassword = ""
 DatabaseName = "I8O8IChessDb"

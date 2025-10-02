@@ -14,7 +14,7 @@ if (!$GameId || $GameId <= 0) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>I8O8IChess Game #<?php echo $GameId; ?></title>
+  <title>I8O8IChess</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- jQuery and jQuery UI -->
@@ -47,22 +47,26 @@ if (!$GameId || $GameId <= 0) {
       min-height: 100vh;
     }
     
-    .Container { 
-      max-width: 1200px; 
-      margin: 0 auto; 
-      background: rgba(42, 42, 42, 0.95);
-      padding: 20px; 
-      border: 2px solid #444;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
-      backdrop-filter: blur(10px);
+    .Container {
+      /* Fit Comfortably On 1366px Screens (Allow Room For Browser Chrome) */
+      max-width: 1100px;
+      margin: 16px auto;
+      background: linear-gradient(180deg, rgba(30,30,30,0.95), rgba(26,26,26,0.95));
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(6px) saturate(120%);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     h1 {
       color: #4CAF50;
-      text-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
-      margin-bottom: 20px;
-      font-size: 2.2em;
+      text-shadow: 0 6px 20px rgba(76,175,80,0.12);
+      margin-bottom: 18px;
+      font-size: 2.1rem;
+      letter-spacing: 1px;
+      font-weight: 700;
     }
 
     /* Players Info */
@@ -79,18 +83,20 @@ if (!$GameId || $GameId <= 0) {
     }
     
     .PlayerBox {
-      padding: 15px;
-      background: rgba(34, 34, 34, 0.8);
-      border: 2px solid #444;
-      border-radius: 8px;
+      padding: 16px;
+      background: linear-gradient(180deg, rgba(28,28,28,0.85), rgba(34,34,34,0.7));
+      border: 1px solid rgba(76,175,80,0.06);
+      border-radius: 10px;
       min-width: 180px;
-      transition: all 0.3s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.55);
     }
     
     .PlayerBox.Active {
-      border-color: #4CAF50;
-      box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
-      background: rgba(76, 175, 80, 0.1);
+      border-color: rgba(76,175,80,0.25);
+      box-shadow: 0 10px 30px rgba(76,175,80,0.06), 0 2px 8px rgba(0,0,0,0.6);
+      background: linear-gradient(180deg, rgba(76,175,80,0.03), rgba(34,34,34,0.6));
+      transform: translateY(-2px);
     }
     
     .PlayerBox.Waiting {
@@ -107,12 +113,12 @@ if (!$GameId || $GameId <= 0) {
     
     .Timer {
       font-size: 28px;
-      font-weight: bold;
-      font-family: 'Digital-7', 'Courier New', monospace;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
       color: #4CAF50;
-      text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+      text-shadow: 0 4px 8px rgba(76,175,80,0.06);
       margin: 8px 0;
-      letter-spacing: 2px;
+      letter-spacing: 1.6px;
     }
     
     .Timer.Warning { 
@@ -136,24 +142,26 @@ if (!$GameId || $GameId <= 0) {
     }
     
     /* Chess Board Container */
-    #Board { 
+    #Board {
       width: 100%;
-      max-width: 600px;
-      margin: 20px auto;
-      border: 4px solid #444;
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      max-width: 540px; /* Slightly larger For Breathing Room */
+      margin: 18px auto;
+      border-radius: 10px;
       overflow: hidden;
+      background: linear-gradient(180deg, rgba(10,10,10,0.2), rgba(0,0,0,0.15));
+      padding: 6px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.02);
     }
     
     /* Board Squares Customization */
     .white-1e1d7 { 
       background-color: #e9edcc !important; 
-      transition: background-color 0.2s;
+      transition: background-color 0.18s ease;
     }
     .black-3c85d { 
       background-color: #779952 !important; 
-      transition: background-color 0.2s;
+      transition: background-color 0.18s ease;
     }
     .square-55d63 { 
       border: none !important; 
@@ -188,12 +196,13 @@ if (!$GameId || $GameId <= 0) {
 
     /* Move History Styles */
     .MoveHistory {
-      background: rgba(51, 51, 51, 0.8);
-      padding: 20px;
-      border-radius: 8px;
-      border: 1px solid #444;
-      height: 280px;
+      background: linear-gradient(180deg, rgba(28,28,28,0.85), rgba(20,20,20,0.75));
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.02);
+      height: 260px;
       overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     }
     
     .MoveHistory h3 {
@@ -204,9 +213,9 @@ if (!$GameId || $GameId <= 0) {
     }
     
     .MoveList {
-      height: 220px;
+      height: 200px;
       overflow-y: auto;
-      padding-right: 10px;
+      padding-right: 8px;
     }
     
     .MoveList::-webkit-scrollbar {
@@ -324,8 +333,8 @@ if (!$GameId || $GameId <= 0) {
       border-radius: 8px;
       border: 1px solid #444;
       display: flex;
-      justify-content: center !important;   /* Ensure horizontal centering */
-      align-items: center !important;       /* Ensure vertical centering */
+      justify-content: center !important;   /* Ensure Horizontal Centering */
+      align-items: center !important;       /* Ensure Vertical Centering */
       gap: 15px;
       flex-wrap: wrap;
       width: 100%;
@@ -369,7 +378,7 @@ if (!$GameId || $GameId <= 0) {
     }
     
     .BtnDraw { 
-      background: linear-gradient(45deg, #ffa000, #ff8f00);
+      background: linear-gradient(45deg, #ffb347, #ff8f00);
       color: white;
       box-shadow: 0 4px 15px rgba(255, 160, 0, 0.3);
     }
@@ -381,7 +390,7 @@ if (!$GameId || $GameId <= 0) {
     }
     
     .BtnResign { 
-      background: linear-gradient(45deg, #f44336, #d32f2f);
+      background: linear-gradient(45deg, #f66565, #d32f2f);
       color: white;
       box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
     }
@@ -393,10 +402,38 @@ if (!$GameId || $GameId <= 0) {
     }
     
     .BtnExit { 
-      background: linear-gradient(45deg, #666, #555);
+      background: linear-gradient(45deg, #5a5a5a, #444);
       color: white;
       box-shadow: 0 4px 15px rgba(102, 102, 102, 0.3);
     }
+
+    /* Popup Styling */
+    /* (Popup-Overlay Defined Later / In Shared Stylesheet) */
+    .popup {
+      background: linear-gradient(180deg, rgba(30,30,30,0.98), rgba(20,20,20,0.98));
+      border-radius: 10px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.75);
+      max-width: 520px;
+    }
+    .popup-title { color: #4CAF50; font-weight: 700; margin-bottom: 8px; }
+    .popup-message { color: #ddd; white-space: pre-wrap; margin-bottom: 12px; }
+
+    /* Chat Input */
+    .ChatInputContainer input {
+      background: rgba(20,20,20,0.6);
+      color: #eee;
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 10px;
+      border-radius: 8px;
+      outline: none;
+    }
+    #ChatList { background: rgba(12,12,12,0.6); padding: 12px; border-radius: 8px; }
+
+    /* Move list Rows */
+    .MoveRow { padding: 6px 8px; border-radius: 6px; }
+    .MoveRow:hover { background: rgba(76,175,80,0.04); }
     
     .BtnExit:hover { 
       background: linear-gradient(45deg, #555, #666);
@@ -786,14 +823,17 @@ if (!$GameId || $GameId <= 0) {
       }
     }
   </style>
+  <!-- Retro Theme Font And Overrides -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/game.css">
 </head>
-<body>
+<body class="retro">
 <div class="connection-status" id="connectionStatus" style="display: none;">
   Connected
 </div>
 
 <div class="Container">
-  <h1>I8O8IChess Game #<?php echo $GameId; ?></h1>
+  <h1>I8O8IChess <span id="roomBadge" style="font-size:0.5em; color:#bdbdbd; margin-left:8px; display:none;">Room</span></h1>
   <div class="MainGrid">
     <div class="LeftCol">
       <div class="PlayersInfo">
@@ -807,7 +847,7 @@ if (!$GameId || $GameId <= 0) {
           <div class="Timer" id="PlayerTimer">10:00</div>
         </div>
       </div>
-      <!-- Ensure the board container is present and not hidden -->
+      <!-- Ensure The Board Container Is Present And Not Hidden -->
       <div id="Board"></div>
       <div class="GameControls">
         <button class="BtnDraw" onclick="offerDraw()">Offer Draw</button>
@@ -863,7 +903,9 @@ if (!localStorage.getItem('I8O8IChessUserId')) {
 }
 
 // GameConfiguration
-const GameId = parseInt(window.location.href.match(/gameId=(\d+)/)?.[1] || 0);
+const urlParams = new URLSearchParams(window.location.search);
+const GameId = parseInt(urlParams.get('gameId') || 0);
+const JoinToken = urlParams.get('token') || null;
 const UserId = parseInt(localStorage.getItem('I8O8IChessUserId'));
 const UserName = localStorage.getItem('I8O8IChessUserName') || 'Player';
 
@@ -893,11 +935,15 @@ try {
     chess = new Chess();
     console.log('Chess Engine Initialized Successfully');
 } catch (error) {
-    console.error('Chess Initialization Error:', error);
+    console.error('Chess Initialization Error :', error);
     StatusEl.innerText = 'Error Initializing Chess Game. Please Refresh The Page.';
 }
 
 const ApiBaseUrl = "<?php echo $AppConfig['ApiBaseUrl']; ?>";
+
+// We'll Validate Over The Authenticated Socket Once Connected To Prevent Anonymous Token Usage.
+let validateCompleted = false;
+let joined = false;
 
 // Socket.IO Connection
 const socket = io(ApiBaseUrl, {
@@ -934,43 +980,55 @@ function updateConnectionStatus(connected) {
     }
 }
 
+// Retro Theme Is Permanent Via Body.retro Class In The Markup
+
 function initBoard() {
     if (!chess || !playerColor) {
         console.log('Cannot Initialize Board - Missing Chess Engine or Player Color');
         return;
     }
 
-    console.log('Initializing Board with Color:', playerColor);
+    console.log('Initializing Board With Color :', playerColor);
 
     if (board) {
         board.destroy();
     }
-    
-    const config = {
-        draggable: true,
-        position: chess.fen(),
-        orientation: playerColor,
-        pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
-        showNotation: false,
-        onDrop: handleDrop,
-        onSnapEnd: () => {
-            if (board) board.position(chess.fen())
-        },
-        moveSpeed: 200,
-        snapSpeed: 100
-    };
+
+  // Calculate An Appropriate Board Size Based On Container Width
+  const container = document.querySelector('.LeftCol') || document.querySelector('.Container');
+  const maxBoard = Math.min((container ? container.clientWidth : window.innerWidth) - 40, 520);
+
+  const config = {
+    draggable: true,
+    position: chess.fen(),
+    orientation: playerColor,
+    pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
+    showNotation: false,
+    onDrop: handleDrop,
+    onSnapEnd: () => {
+      if (board) board.position(chess.fen())
+    },
+    moveSpeed: 200,
+    snapSpeed: 100,
+    // Custom Size Hint For Some Chessboard.js Versions
+    size: maxBoard
+  };
     
     try {
         board = Chessboard('Board', config);
         board.position(chess.fen(), false);
 
-        // Force Proper Rendering
-        setTimeout(() => {
-            if (board) {
-                board.resize();
-                window.dispatchEvent(new Event('resize'));
-            }
-        }, 150);
+    // Force Proper Rendering And Ensure It Fits On Small Screens
+    setTimeout(() => {
+      try {
+        if (board && typeof board.resize === 'function') board.resize();
+        // Adjust The DOM If Needed To Keep Layout Compact On Narrow Screens
+        adjustLayoutForScreen();
+        window.dispatchEvent(new Event('resize'));
+      } catch (e) {
+        console.warn('Board Resize Not Supported By This Chessboard Build', e);
+      }
+    }, 150);
         
         gameInitialized = true;
         console.log('Board Initialized Successfully');
@@ -979,6 +1037,34 @@ function initBoard() {
         StatusEl.innerText = 'Error Initializing Game Board. Please Refresh The Page.';
     }
 }
+
+// Adjust Layout Helper: Ensure Small Screens Show Everything And Board Scales
+function adjustLayoutForScreen() {
+  const winW = window.innerWidth;
+  const container = document.querySelector('.Container');
+  if (!container) return;
+
+  if (winW <= 480) {
+    container.style.padding = '8px';
+  } else if (winW <= 768) {
+    container.style.padding = '12px';
+  } else {
+    container.style.padding = '16px';
+  }
+
+  // Try To Resize Chessboard If Available
+  if (board && typeof board.resize === 'function') {
+    try {
+      board.resize();
+    } catch (e) {
+      // ignore
+    }
+  }
+}
+
+window.addEventListener('resize', () => {
+  adjustLayoutForScreen();
+});
 
 function handleDrop(source, target) {
     // Validation Checks
@@ -1044,7 +1130,7 @@ function syncTimersWithServer(serverTimers) {
     timers.isActive = serverTimers.is_active || false;
     timers.lastServerSync = Date.now();
 
-    console.log('Timers Synced With Server:', timers);
+    console.log('Timers Synced With Server :', timers);
     updateTimerDisplay();
 }
 
@@ -1146,16 +1232,86 @@ function updateActivePlayer(isMyTurn) {
 
 // Socket.IO Event Handlers
 socket.on('connect', () => {
-    console.log('Socket Connected Successfully');
-    updateConnectionStatus(true);
-    reconnectAttempts = 0;
-    
-    // Register user and join game
-    socket.emit('register_user', { UserId });
-    
-    setTimeout(() => {
-        socket.emit('join_game', { UserId, GameId });
-    }, 100);
+  console.log('Socket Connected Successfully');
+  updateConnectionStatus(true);
+  reconnectAttempts = 0;
+
+  // Register User Then Validate Access Over The Socket.
+  // Request Server To Register This Socket For The Current User.
+  socket.emit('register_user', { UserId });
+  // Wait For Explicit Acknowledgement From Server (register_result)
+  // Before Attempting Validation To Avoid Race Conditions Where
+  // The Server Hasn't Yet Associated This Socket With The User Id.
+  StatusEl.innerText = 'Registering Socket...';
+});
+
+// Server Replies Whether This Socket/User Is Allowed To Join The Game.
+socket.on('validate_result', (data) => {
+  console.log('validate_result', data);
+  if (!data) return;
+  // Server Sometimes Sends 'Allowed' (capitalized) — Accept Either Form For Robustness
+  const isAllowed = (data.Allowed === true) || (data.allowed === true);
+  if (isAllowed) {
+    StatusEl.innerText = '';
+    // Now That Validation Succeeded, Perform The Actual Join.
+    const joinPayload = { UserId, GameId };
+    if (JoinToken) joinPayload.JoinToken = JoinToken;
+    socket.emit('join_game', joinPayload);
+  } else {
+    // Not Allowed To Join — Show Message And Prevent Further Join Attempts.
+    StatusEl.innerText = 'Access Denied';
+    // Prefer Server-Provisioned Fields (Message / message / reason) So The
+    // Client Shows A Helpful Reason Instead Of A Generic Fallback.
+    const reason = data.Message || data.message || data.reason || 'Unable To Validate Access To This Game.';
+      // Log Helpful IDs For Debugging
+    console.warn('validate_result denied:', { reason, serverWhite: data.WhiteUserId, serverBlack: data.BlackUserId, localUser: UserId });
+      // Show Initial Popup With Short Reason
+      showPopup('Access Denied', reason, 'Return To Lobby', '');
+
+      // Additional HTTP validation fallback to get more diagnostic info
+      (async () => {
+        try {
+          const resp = await fetch(`${ApiBaseUrl}/api/game/validate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ GameId, JoinToken, UserId })
+          });
+          const json = await resp.json();
+          console.log('HTTP /api/game/validate response:', resp.status, json);
+          // If The HTTP API Returns More Detail, Update The Popup So You Can See It
+          const detail = [];
+          detail.push(`SocketReason: ${reason}`);
+          detail.push(`APIStatus: ${resp.status}`);
+          if (json.Message) detail.push(`API Message: ${json.Message}`);
+          if (json.Allowed !== undefined) detail.push(`API Allowed: ${json.Allowed}`);
+          if (json.WhiteUserId !== undefined) detail.push(`API WhiteUserId: ${json.WhiteUserId}`);
+          if (json.BlackUserId !== undefined) detail.push(`API BlackUserId: ${json.BlackUserId}`);
+
+          // Show Extended Info In Console And In The Popup Message For Debugging
+          console.warn('Extended Validation Info :', detail.join(' | '));
+          showPopup('Access Denied', reason + '\n\nDebug Info:\n' + detail.join('\n'), 'Return To Lobby', '');
+        } catch (e) {
+          console.error('Error Calling HTTP Validation Endpoint', e);
+        }
+      })();
+  }
+});
+
+// Handle Server Acknowledgement Of register_user And Only Then Validate The Game.
+socket.on('register_result', (data) => {
+  console.log('register_result', data);
+  if (!data || !data.Success) {
+    StatusEl.innerText = 'Socket Registration Failed';
+    const reason = (data && (data.Message || data.message)) || 'Socket Registration Failed.';
+    showPopup('Error', reason, 'Return To Lobby', '');
+    return;
+  }
+
+  // Now Safe To Validate The Game Over The Socket (Prevents HTTP Token Misuse And Race Conditions)
+  const validatePayload = { UserId, GameId };
+  if (JoinToken) validatePayload.JoinToken = JoinToken;
+  socket.emit('validate_game', validatePayload);
+  StatusEl.innerText = 'Validating Game Access...';
 });
 
 socket.on('disconnect', (reason) => {
@@ -1169,11 +1325,14 @@ socket.on('disconnect', (reason) => {
 socket.on('reconnect', (attemptNumber) => {
     console.log('Socket Reconnected After', attemptNumber, 'Attempts');
     updateConnectionStatus(true);
-    
-    // Re-register and rejoin game
+
+    // Re-Register Then Re-Validate Before Attempting To Rejoin.
     socket.emit('register_user', { UserId });
     setTimeout(() => {
-        socket.emit('join_game', { UserId, GameId });
+      const validatePayload = { UserId, GameId };
+      if (JoinToken) validatePayload.JoinToken = JoinToken;
+      socket.emit('validate_game', validatePayload);
+      StatusEl.innerText = 'Validating Game Access...';
     }, 100);
 });
 
@@ -1192,7 +1351,7 @@ socket.on('register_result', (res) => {
     if (res.Success) {
         console.log('User Registered Successfully');
     } else {
-        console.error('User Registration Failed:', res);
+        console.error('User Registration Failed :', res);
         showPopup('Registration Error', 
             'Failed To Register With The Game Server. Please Refresh The Page.',
             'Refresh', null,
@@ -1218,7 +1377,7 @@ socket.on('assign_color', (data) => {
 });
 
 socket.on('game_state', (data) => {
-    console.log('Game State Received:', data);
+    console.log('Game State Received :', data);
     
     if (!data.Success) {
         StatusEl.innerText = `Error: ${data.Message || 'Unknown Game Error'}`;
@@ -1251,7 +1410,7 @@ socket.on('game_state', (data) => {
             board.position(chess.fen());
         }
     } catch (error) {
-        console.error('Error Loading FEN:', error);
+        console.error('Error Loading FEN :', error);
         StatusEl.innerText = 'Error Loading Game Position';
         return;
     }
@@ -1261,13 +1420,13 @@ socket.on('game_state', (data) => {
         syncTimersWithServer(data.Timers);
     }
 
-    // Handle Presence and Game Start
+    // Handle Presence And Game Start
     if (data.BothPlayersPresent) {
         timers.gameStarted = true;
         document.getElementById('OpponentBox').classList.remove('Waiting');
         document.getElementById('PlayerBox').classList.remove('Waiting');
 
-        // Determine Turn and Update UI
+        // Determine Turn And Update UI
         if (playerColor) {
             const currentTurn = chess.turn() === 'w' ? 'white' : 'black';
             const isMyTurn = currentTurn === playerColor;
@@ -1275,7 +1434,7 @@ socket.on('game_state', (data) => {
             updateActivePlayer(isMyTurn);
             StatusEl.innerText = isMyTurn ? "Your Turn!" : "Opponent's Turn...";
 
-            // Start Timer if Game Active
+            // Start Timer If Game Active
             if (!chess.game_over() && data.Timers?.is_active) {
                 timers.isActive = true;
                 startClientTimer();
@@ -1300,13 +1459,13 @@ socket.on('game_start', (data) => {
 });
 
 socket.on('player_joined', (data) => {
-    console.log('Player Joined:', data);
+    console.log('Player Joined :', data);
 
     const opponentId = data.UserId;
     const opponentColor = data.IsWhite ? 'white' : 'black';
     document.getElementById('OpponentName').innerText = `Player #${opponentId} (${opponentColor})`;
 
-    // FIXED: Start Game When Both Players Present
+    // FIXED : Start Game When Both Players Present
     if (data.BothPlayersPresent) {
         timers.gameStarted = true;
         
@@ -1326,25 +1485,42 @@ socket.on('player_joined', (data) => {
 
 socket.on('player_left', (data) => {
     console.log('Player Left:', data);
+  // Final: Opponent left The Game Permanently
+  StatusEl.innerText = "You Won ! Opponent Has Left The Game.";
+  stopClientTimer();
+  timers.isActive = false;
+    
+  if (board) {
+    board.draggable = false;
+  }
+    
+  showPopup('Opponent Left', 
+    'Your Opponent Has Disconnected From The Game.',
+    'Return To Lobby', null,
+    () => window.location.href = 'lobby.php', null
+  );
+});
 
-    StatusEl.innerText = "You Won ! Opponent Has Left The Game.";
-    stopClientTimer();
-    timers.isActive = false;
-    
-    if (board) {
-        board.draggable = false;
-    }
-    
-    showPopup('Opponent Left', 
-        'Your Opponent Has Disconnected From The Game.',
-        'Return To Lobby', null,
-        () => window.location.href = 'lobby.php', null
-    );
+// Temporary Disconnect: Opponent Lost Connection But May Reconnect Within Grace Period
+socket.on('player_disconnected', (data) => {
+  console.log('Player Disconnected (Temporary) :', data);
+  const otherUserId = data.UserId;
+  StatusEl.innerText = 'Opponent Disconnected. Waiting For Reconnection...';
+  // Do Not Stop Timers Yet, But Pause Client-Side Timer UI To Reflect Delay
+  // (Server Maintains Authoritative Timers)
+  if (board) board.draggable = false;
+  // Show A Subtle Notice (No Popup) So Player Can Continue Waiting
+  connectionStatus.textContent = 'Opponent Disconnected - Awaiting Reconnection';
+  connectionStatus.className = 'connection-status disconnected';
+  connectionStatus.style.display = 'block';
+  setTimeout(() => {
+    connectionStatus.style.display = 'none';
+  }, 5000);
 });
 
 socket.on('move_made', (data) => {
     if (!data.Success) {
-        console.error('Move Failed:', data);
+        console.error('Move Failed :', data);
         if (board) {
             board.position(chess.fen());
         }
@@ -1365,7 +1541,7 @@ socket.on('move_made', (data) => {
             addMoveToHistory(data.San, prevTurn, isMyMove);
         }
 
-        // FIXED: Sync Timers With Server Data
+        // FIXED : Sync Timers With Server Data
         if (data.Timers) {
             syncTimersWithServer(data.Timers);
             if (timers.gameStarted && timers.isActive) {
@@ -1379,7 +1555,7 @@ socket.on('move_made', (data) => {
         
         updateActivePlayer(isMyTurn);
 
-        // FIXED: Don't Update Status If Checkmate Detected
+        // FIXED : Don't Update Status If Checkmate Detected
         if (data.IsCheckmate) {
             // Let The game_over Handler Manage Status
             stopClientTimer();
@@ -1422,7 +1598,7 @@ socket.on('position_analysis', (data) => {
     }
 });
 
-// FIXED: Game Over Handling With Proper Checkmate Detection
+// FIXED : Game Over Handling With Proper Checkmate Detection
 socket.on('game_over', (data) => {
     console.log('Game Over:', data);
 
@@ -1643,14 +1819,14 @@ function sendChatMessage() {
         return;
     }
 
-    // FIX: Use the correct event name 'send_chat' to match backend
+    // FIX: Use The Correct Event Name 'send_chat' To Match Backend
     socket.emit('send_chat', {
         GameId: GameId,
         UserId: UserId,
         MessageText: msg
     });
 
-    // Do not add the message locally, wait for server echo for consistency
+    // Do Not Add The Message Locally, Wait For Server Echo For Consistency
     ChatInput.value = '';
 }
 
@@ -1788,7 +1964,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Global Error Handler
 window.addEventListener('error', (event) => {
     console.error('Global Error Caught:', event);
-    StatusEl.innerText = 'An unexpected error occurred. Please refresh the page.';
+    StatusEl.innerText = 'An Unexpected Error Occurred. Please Refresh The Page.';
 });
 
 // Prevent Default Context Menu

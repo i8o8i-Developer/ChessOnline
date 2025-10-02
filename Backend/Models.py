@@ -414,10 +414,13 @@ class GameModel:
             with Conn.cursor() as cursor:
                 sql = """
                     INSERT INTO Games 
-                    (WhiteUserId, BlackUserId, Fen, MoveHistory, GameType, TimeControl, Increment) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    (WhiteUserId, BlackUserId, Fen, MoveHistory, GameType, TimeControl, Increment, JoinToken, AllowedUserIds, TokenUsedBy, TokenSentToSids) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
-                cursor.execute(sql, (WhiteUserId, BlackUserId, Fen, "", GameType, TimeControl, Increment))
+                # Initialize token fields as NULL by default; callers may provide a JoinToken and allowed ids
+                cursor.execute(sql, (
+                    WhiteUserId, BlackUserId, Fen, "", GameType, TimeControl, Increment, None, None, None, None
+                ))
                 GameId = cursor.lastrowid
                 return GameId
         finally:
@@ -451,7 +454,45 @@ class GameModel:
             Cur = Conn.cursor()
             Cur.execute(Sql, (GameId,))
             Row = Cur.fetchone()
+            # Parse JSON Token Fields Into Python Structures For Safer Use
+            if Row:
+                try:
+                    if 'AllowedUserIds' in Row and Row['AllowedUserIds']:
+                        import json
+                        Row['AllowedUserIds'] = [int(x) for x in json.loads(Row['AllowedUserIds'])]
+                except Exception:
+                    Row['AllowedUserIds'] = Row.get('AllowedUserIds') or []
+                try:
+                    if 'TokenUsedBy' in Row and Row['TokenUsedBy']:
+                        import json
+                        Row['TokenUsedBy'] = set(int(x) for x in json.loads(Row['TokenUsedBy']))
+                except Exception:
+                    Row['TokenUsedBy'] = set(Row.get('TokenUsedBy') or [])
+                try:
+                    if 'TokenSentToSids' in Row and Row['TokenSentToSids']:
+                        import json
+                        Row['TokenSentToSids'] = set(json.loads(Row['TokenSentToSids']))
+                except Exception:
+                    Row['TokenSentToSids'] = set(Row.get('TokenSentToSids') or [])
             return Row
+        finally:
+            Conn.close()
+
+    @staticmethod
+    def GetGameByJoinToken(JoinToken):
+        """Return The Game Row (Parsed) Matching The Provided JoinToken Or None."""
+        if not JoinToken:
+            return None
+        Conn = DbHelper.GetConnection()
+        try:
+            Sql = "SELECT * FROM Games WHERE JoinToken = %s LIMIT 1"
+            Cur = Conn.cursor()
+            Cur.execute(Sql, (JoinToken,))
+            Row = Cur.fetchone()
+            if not Row:
+                return None
+            # reuse GetGameById parsing logic by calling GetGameById with the id
+            return GameModel.GetGameById(Row['GameId'])
         finally:
             Conn.close()
         
@@ -462,6 +503,23 @@ class GameModel:
         try:
             Sql = "UPDATE Games SET Status=%s WHERE GameId=%s"
             Conn.cursor().execute(Sql, (Status, GameId))
+        finally:
+            Conn.close()
+
+    @staticmethod
+    def UpdateGameTokenFields(GameId, JoinToken=None, AllowedUserIds=None, TokenUsedBy=None, TokenSentToSids=None):
+        """Store join-token related fields as JSON in the database."""
+        import json
+        Conn = DbHelper.GetConnection()
+        try:
+            cursor = Conn.cursor()
+            sql = """
+                UPDATE Games SET JoinToken=%s, AllowedUserIds=%s, TokenUsedBy=%s, TokenSentToSids=%s WHERE GameId=%s
+            """
+            allowed_json = json.dumps(AllowedUserIds) if AllowedUserIds is not None else None
+            used_json = json.dumps(list(TokenUsedBy)) if TokenUsedBy is not None else None
+            sids_json = json.dumps(TokenSentToSids) if TokenSentToSids is not None else None
+            cursor.execute(sql, (JoinToken, allowed_json, used_json, sids_json, GameId))
         finally:
             Conn.close()
 

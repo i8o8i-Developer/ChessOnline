@@ -314,8 +314,11 @@ if (isset($_SESSION['user_id']) ||
       }
     }
   </style>
+  <!-- Retro Theme Font and Overrides (shared) -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/game.css">
 </head>
-<body>
+<body class="retro">
   <div class="Container">
     <div class="Logo">
       <h1>I8O8I</h1>
@@ -392,7 +395,7 @@ function checkExistingSession() {
     const userName = localStorage.getItem('I8O8IChessUserName');
     
     if (userId && userName) {
-        // Verify session is still valid
+        // Verify Session Is Still Valid
         fetch(`${ApiBase}/user/${userId}`)
             .then(response => response.json())
             .then(data => {
@@ -574,7 +577,7 @@ async function handleLogin() {
         const result = await apiPost("/login", { UserName, Password });
         
         if (result && result.Success) {
-            // Store user data
+            // Store User Data
             localStorage.setItem("I8O8IChessUserId", result.UserId);
             localStorage.setItem("I8O8IChessUserName", result.UserName);
             localStorage.setItem("I8O8IChessClassicalRating", result.ClassicalRating || 1000);
@@ -582,7 +585,7 @@ async function handleLogin() {
             
             showSuccess('Login Successful! Redirecting...');
             
-            // Redirect after short delay
+            // Redirect After Short Delay
             setTimeout(() => {
                 window.location.href = "lobby.php";
             }, 1000);

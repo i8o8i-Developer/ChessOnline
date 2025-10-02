@@ -41,6 +41,11 @@ CREATE TABLE IF NOT EXISTS Games (
   BlackUserId INT,
   Fen VARCHAR(1024) NOT NULL,
   MoveHistory TEXT,
+  -- Persistent Token Fields For Join-Token Workflows
+  JoinToken VARCHAR(64) DEFAULT NULL,
+  AllowedUserIds JSON DEFAULT NULL,
+  TokenUsedBy JSON DEFAULT NULL,
+  TokenSentToSids JSON DEFAULT NULL,
   Result ENUM('White', 'Black', 'Draw', 'Ongoing') DEFAULT 'Ongoing',
   Status ENUM('ongoing', 'finished', 'abandoned', 'timeout', 'checkmate', 'draw_offered') DEFAULT 'ongoing',
   GameType ENUM('classical', 'rapid', 'blitz') DEFAULT 'classical',
