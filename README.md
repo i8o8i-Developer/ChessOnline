@@ -359,23 +359,23 @@ socket.on('gameUpdate', (data) => {
 
 ### Lobby
 
-![Lobby Screenshot](ScreenShots/LOBBY.png)
+![Lobby Screenshot](ScreenShots\LOBBY.png)
 
 ### Index
 
-![Index Screenshot](ScreenShots/INDEX.png)
+![Index Screenshot](ScreenShots\INDEX.png)
 
 ### Game
 
-![Game Screenshot](ScreenShots/GAME.png)
+![Game Screenshot](ScreenShots\GAME.png)
 
 ### Contact
 
-![Contact Screenshot](ScreenShots/CONTACT.png)
+![Contact Screenshot](ScreenShots\CONTACT.png)
 
 ### ReleaseNotes
 
-![ReleaseNote Screenshot](ScreenShots/RELEASENOTE.png)
+![ReleaseNote Screenshot](ScreenShots\RELEASENOTE.png)
 
 ## Contributing
 
