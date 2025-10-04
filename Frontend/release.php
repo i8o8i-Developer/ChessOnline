@@ -50,6 +50,16 @@ if (file_exists('maintenance')) {
 			h1 { font-size:16px; }
 			.btn { padding:8px 10px; font-size:12px; }
 		}
+		/* Small Screen Responsive Adjustments (<=475px) For Release Notes */
+		@media (max-width:475px){
+		html, body { height:auto; min-height:100%; padding:12px; margin:0; overflow:auto }
+		body{ display:flex; align-items:center; justify-content:center }
+		.Card{ width:100%; max-width:460px; padding:12px; margin:0 auto; box-sizing:border-box; border-radius:12px; max-height: calc(100vh - 32px); overflow:auto }
+		.header-row{ flex-direction:column; align-items:center; gap:8px }
+		.releases{ grid-template-columns:1fr }
+		.header-actions{ justify-content:center }
+		.btn{ width:100% !important; box-sizing:border-box }
+		}
 	</style>
 </head>
 <body>

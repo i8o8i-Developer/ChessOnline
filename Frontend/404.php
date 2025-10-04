@@ -110,6 +110,16 @@ http_response_code(404);
       .Container{ padding: 20px 18px; margin: 14px }
       .ErrorCode{ font-size: clamp(48px, 28vw, 80px) }
     }
+
+    /* Mobile fixes (<=475px): center container and enable internal scrolling */
+    @media (max-width:475px){
+      html, body { height:auto; min-height:100%; padding:12px; margin:0; overflow:auto }
+      body{ display:flex; align-items:center; justify-content:center }
+      .Container{ width:100%; max-width:460px; padding:16px; margin:0 auto; box-sizing:border-box; border-radius:12px; max-height: calc(100vh - 32px); overflow:auto; -webkit-overflow-scrolling: touch }
+      .Logo h1{ font-size: clamp(20px, 6vw, 32px) }
+      .ErrorCode{ font-size: clamp(48px, 18vw, 96px) }
+      .btn{ width:100% !important; box-sizing:border-box }
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>

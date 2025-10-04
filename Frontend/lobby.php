@@ -14,7 +14,7 @@ if (file_exists('maintenance')) {
   <meta charset="utf-8">
   <title>I8O8IChess Lobby</title>
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-    <!-- External Styles (use static/lobby.css as the single source for lobby styles) -->
+    <!-- External Styles (Use static/lobby.css As The Single Source For Lobby Styles) -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/game.css">
     <link rel="stylesheet" href="static/lobby.css">
@@ -224,6 +224,23 @@ if (file_exists('maintenance')) {
         </div>
     </div>
   </div>
+
+<!-- Mobile responsive fixes for lobby <=475px -->
+<style>
+@media (max-width:475px){
+  html, body { height:auto; min-height:100%; padding:8px; margin:0; overflow:auto }
+  body.retro{ display:flex; align-items:center; justify-content:center }
+  .Container{ width:100%; max-width:460px; padding:12px; margin:0 auto; box-sizing:border-box; border-radius:12px; max-height: calc(100vh - 32px); overflow:auto }
+  .MainSection, .LeftPanel, .RightPanel{ width:100%; display:block }
+  .UserInfo.compact{ text-align:center }
+  .SectionHeader{ text-align:center }
+  .Stats, .Achievements{ display:block }
+  .HeaderActions{ justify-content:center }
+  input, .btn, a{ width:100% !important }
+  .popup-overlay{ align-items:flex-start; padding-top:18px }
+  .popup{ max-width:94%; margin:0 auto; max-height: calc(100vh - 64px); overflow:auto }
+}
+</style>
 
 <script>
 let ApiBaseUrl = "<?php echo $AppConfig['ApiBaseUrl']; ?>";

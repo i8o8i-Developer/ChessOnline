@@ -61,6 +61,20 @@ if (file_exists('maintenance')) {
   .btn-ghost:hover{ transform: translateY(-2px) }
 
   @media (max-width:700px){ .Card{ padding:18px } h1{ font-size:20px } .header-row{ flex-direction:column; align-items:flex-start; gap:10px } .header-actions{ width:100%; justify-content:flex-end } }
+
+  /* Responsive Mobile Fixes (<=475px): Center Container And Make It Scrollable */
+  @media (max-width:475px){
+    html, body { height: auto; min-height:100%; padding:12px; margin:0; overflow:auto; }
+    body{ display:flex; align-items:center; justify-content:center; }
+    .Card { width:100%; max-width:460px; margin:0 auto; padding:18px; border-radius:12px; box-sizing:border-box; max-height: calc(100vh - 32px); overflow:auto; -webkit-overflow-scrolling: touch; }
+    .header-row{ flex-direction:column; align-items:center; gap:8px }
+    .header-actions{ width:100%; justify-content:center }
+    input, textarea, .btn-send, .header-btn, .btn-ghost { width:100% !important; box-sizing:border-box }
+    .footer-links{ justify-content:center }
+    .plus{ display:none }
+    .note{ text-align:center }
+    .Card *{ -webkit-text-size-adjust:100% }
+  }
   </style>
 </head>
 <body>

@@ -108,6 +108,15 @@ header('Retry-After: 3600');
       .MaintenanceIcon{ font-size:84px }
       .Container{ padding:28px }
     }
+
+    /* Ensure Maintenance Page Is Centered And Scrollable on Narrow Devices */
+    @media (max-width:475px){
+      html, body { height:auto; min-height:100%; padding:12px; margin:0; overflow:auto }
+      body{ display:flex; align-items:center; justify-content:center }
+      .Container{ width:100%; max-width:460px; padding:20px; margin:0 auto; box-sizing:border-box; border-radius:12px; max-height: calc(100vh - 32px); overflow:auto }
+      .Logo h1{ font-size:28px }
+      .MaintenanceIcon{ font-size:72px }
+    }
   </style>
 </head>
 <body>

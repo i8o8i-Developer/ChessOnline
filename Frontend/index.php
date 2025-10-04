@@ -127,6 +127,18 @@ if (isset($_SESSION['user_id']) ||
       .BtnGroup{ flex-direction:column }
       .ExtraLinks{ flex-direction:column }
     }
+
+    /* Small-Screen Responsive Adjustments (<=475px) */
+    @media (max-width:475px){
+      html, body { height:auto; min-height:100%; padding:12px; margin:0; overflow:auto }
+      body.retro{ display:flex; align-items:center; justify-content:center }
+      .Container{ width:100%; max-width:460px; padding:14px; margin:0 auto; box-sizing:border-box; border-radius:12px; max-height: calc(100vh - 32px); overflow:auto; -webkit-overflow-scrolling: touch }
+      .Form, .BtnGroup { width:100% }
+      .Logo, .Features, .ExtraLinks{ text-align:center }
+      input, .btn{ width:100% !important; box-sizing:border-box }
+      .popup-overlay{ align-items:flex-start; padding-top:18px }
+      .popup{ max-width:94%; margin:0 auto; max-height: calc(100vh - 64px); overflow:auto }
+    }
   </style>
   <!-- Retro Theme Font and Overrides (shared) -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">

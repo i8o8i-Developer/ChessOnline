@@ -828,6 +828,19 @@ if (!$GameId || $GameId <= 0) {
         width: 100%;
       }
     }
+
+    /* Mobile Fixes : Center Main Container And Ensure Scroll Inside Game For Small Screens */
+    @media (max-width:475px){
+      html, body { height:auto; min-height:100%; padding:8px; margin:0; overflow:auto }
+      body.retro{ display:flex; align-items:center; justify-content:center }
+      .Container{ width:100%; max-width:460px; padding:12px; margin:0 auto; box-sizing:border-box; border-radius:12px; max-height: calc(100vh - 32px); overflow:auto; -webkit-overflow-scrolling: touch }
+      .MainGrid, .LeftCol, .RightCol, .LeftPanel, .RightPanel { display:block; width:100% }
+      #popupOverlay{ align-items:flex-start; padding-top:18px }
+      .popup{ max-width:94%; margin:0 auto; max-height: calc(100vh - 64px); overflow:auto }
+      .connection-status{ position:fixed; left:8px; right:8px; top:8px }
+      input, textarea, button, .header-btn { width:100% !important; box-sizing:border-box }
+      .BoardControls, .chat, .GameControls { width:100% }
+    }
   </style>
   <!-- Retro Theme Font And Overrides -->
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
