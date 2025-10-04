@@ -3,6 +3,12 @@
 session_start();
 require_once 'Config.php';
 
+// Check For Maintenance Mode
+if (file_exists('maintenance')) {
+    include 'maintenance.php';
+    exit();
+}
+
 // RedirectIfAlreadyLoggedIn
 if (isset($_SESSION['user_id']) || 
     (isset($_COOKIE['I8O8IChessUserId']) && isset($_COOKIE['I8O8IChessUserName']))) {

@@ -1,5 +1,11 @@
 <?php
 require_once 'Config.php';
+
+// Check for maintenance mode
+if (file_exists('maintenance')) {
+    include 'maintenance.php';
+    exit();
+}
 ?>
 
 <!doctype html>
